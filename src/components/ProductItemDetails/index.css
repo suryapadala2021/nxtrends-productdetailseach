@@ -1,0 +1,50 @@
+/* Write your CSS here */
+.product-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.product-details-container {
+  padding: 20px;
+}
+.product-img {
+  width: 100%;
+  border-radius: 10px;
+}
+.product-title {
+  font-family: 'Roboto';
+  color: #616e7c;
+  font-size: 22px;
+}
+.product-price {
+  font-family: 'Roboto';
+  color: #171f46;
+  font-size: 28px;
+  font-weight: 600;
+}
+.star-img {
+  height: 20px;
+}
+.rating-box {
+  background-color: #3b82f6;
+  display: flex;
+  justify-content: center;
+  padding: 3px;
+  align-items: center;
+  color: white;
+  border-radius: 5px;
+  line-height: 0.3px;
+  width: 70px;
+  margin-right: 20px;
+}
+.rating-review-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.review-count {
+  font-family: 'Roboto';
+  color: #171f46;
+  font-size: 14px;
+}
