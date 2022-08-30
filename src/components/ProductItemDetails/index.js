@@ -45,8 +45,7 @@ class ProductItemDetails extends Component {
     const {match} = this.props
     const {params} = match
     const {id} = params
-    const i = id.split(':')
-    const api = `https://apis.ccbp.in/products/${i[1]}`
+    const api = `https://apis.ccbp.in/products/${id}`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -92,7 +91,7 @@ class ProductItemDetails extends Component {
   }
 
   loadingView = () => (
-    <div className="product-loader-container">
+    <div testid="loader" className="product-loader-container">
       <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
     </div>
   )
@@ -130,12 +129,13 @@ class ProductItemDetails extends Component {
               <p className="review-count">{totalReviews} Reviews</p>
             </div>
             <p className="product-description">{description}</p>
-            <p className="availability">
-              Available:{' '}
-              <span className="product-description">{availability}</span>
+            <p className="product-description">
+              <span className="availability">availability: </span>
+              {availability}
             </p>
-            <p className="availability">
-              Brand: <span className="product-description">{brand}</span>
+            <p className="product-description">
+              <span className="availability"> brand </span>
+              {brand}
             </p>
             <hr />
             <div className="product-count-container">
