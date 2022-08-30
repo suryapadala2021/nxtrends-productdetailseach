@@ -1,1 +1,52 @@
 /* Write your CSS here */
+
+.similar-pro-img {
+  height: 180px;
+  width: 180px;
+  border-radius: 10px;
+}
+.sim-pro-title {
+  font-family: 'Roboto';
+  color: #1e293b;
+  font-size: 14px;
+}
+.brand {
+  font-family: 'Roboto';
+  color: #475569;
+  font-weight: 300;
+  margin-top: 0px;
+  font-size: 15px;
+}
+.sim-pro-price {
+  font-family: 'Roboto';
+  color: #171f46;
+  font-size: 18px;
+  font-weight: 500;
+}
+.rating-box-similar {
+  background-color: #3b82f6;
+  display: flex;
+  justify-content: center;
+  padding: 3px;
+  align-items: center;
+  color: white;
+  border-radius: 5px;
+  line-height: 0.3px;
+  width: 50px;
+  height: 25px;
+  margin-right: 20px;
+}
+.star-img {
+  height: 15px;
+  width: 15px;
+}
+.rating-price-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media screen and (min-width: 768px) {
+  .similar-item {
+    margin: 30px;
+  }
+}

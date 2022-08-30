@@ -3,7 +3,9 @@ import './index.css'
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
+import {BsPlusSquare, BsDashSquare} from 'react-icons/bs'
 import Header from '../Header/index'
+import SimilarProductItem from '../SimilarProductItem/index'
 
 const apiStatusConstants = {
   success: 'SUCCESS',
@@ -11,19 +13,40 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 class ProductItemDetails extends Component {
-  state = {apiStatus: apiStatusConstants.inProgress, productDetails: {}}
+  state = {
+    apiStatus: apiStatusConstants.inProgress,
+    productDetails: {},
+    productCount: 1,
+  }
 
   componentDidMount() {
     this.getProduct()
   }
 
+  incCount = () => {
+    this.setState(prev => ({productCount: prev.productCount + 1}))
+  }
+
+  decCount = () => {
+    const {productCount} = this.state
+    if (productCount > 1) {
+      this.setState(prev => ({productCount: prev.productCount - 1}))
+    }
+  }
+
+  restartShopping = () => {
+    const {history} = this.props
+    history.replace('/products')
+  }
+
   getProduct = async () => {
     const jwtToken = Cookies.get('jwt_token')
-    console.log(jwtToken)
+
     const {match} = this.props
     const {params} = match
     const {id} = params
-    const api = `https://apis.ccbp.in/products/${id[1]}`
+    const i = id.split(':')
+    const api = `https://apis.ccbp.in/products/${i[1]}`
     const options = {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
@@ -35,7 +58,7 @@ class ProductItemDetails extends Component {
 
     if (response.ok) {
       const data = await response.json()
-      console.log(data)
+
       const update = {
         id: data.id,
         imageUrl: data.image_url,
@@ -75,9 +98,8 @@ class ProductItemDetails extends Component {
   )
 
   successView = () => {
-    const {productDetails} = this.state
+    const {productDetails, productCount} = this.state
     const {
-      id,
       imageUrl,
       title,
       price,
@@ -91,23 +113,84 @@ class ProductItemDetails extends Component {
     } = productDetails
     return (
       <div className="product-details-container">
-        <img className="product-img" src={imageUrl} alt="product" />
-        <h1 className="product-title">{title}</h1>
-        <p className="product-price">Rs {price}/-</p>
-        <div className="rating-review-box">
-          <div className="rating-box">
-            <p>{rating}</p>
-            <img
-              className="star-img"
-              src="https://assets.ccbp.in/frontend/react-js/star-img.png"
-              alt="star"
-            />
+        <div className="product-details-lg">
+          <img className="product-img" src={imageUrl} alt="product" />
+          <div>
+            <h1 className="product-title">{title}</h1>
+            <p className="product-price">Rs {price}/-</p>
+            <div className="rating-review-box">
+              <div className="rating-box">
+                <p>{rating}</p>
+                <img
+                  className="star-img"
+                  src="https://assets.ccbp.in/frontend/react-js/star-img.png"
+                  alt="star"
+                />
+              </div>
+              <p className="review-count">{totalReviews} Reviews</p>
+            </div>
+            <p className="product-description">{description}</p>
+            <p className="availability">
+              Available:{' '}
+              <span className="product-description">{availability}</span>
+            </p>
+            <p className="availability">
+              Brand: <span className="product-description">{brand}</span>
+            </p>
+            <hr />
+            <div className="product-count-container">
+              <button
+                testid="minus"
+                onClick={this.decCount}
+                className="count-btn"
+                type="button"
+              >
+                <BsDashSquare />
+              </button>
+              <p className="product-count">{productCount}</p>
+              <button
+                testid="plus"
+                onClick={this.incCount}
+                className="count-btn"
+                type="button"
+              >
+                <BsPlusSquare />
+              </button>
+            </div>
+            <button className="cart-btn" type="button">
+              ADD TO CART{' '}
+            </button>
           </div>
-          <p className="review-count">{totalReviews} Reviews</p>
+        </div>
+        <div className="similar-product-lg">
+          <h1 className="similar-product-heading">Similar Products</h1>
+          <ul className="similar-products-container">
+            {similarProducts.map(each => (
+              <SimilarProductItem key={each.id} details={each} />
+            ))}
+          </ul>
         </div>
       </div>
     )
   }
+
+  failureView = () => (
+    <div className="failure-view">
+      <img
+        className="fail-img"
+        src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-error-view-img.png "
+        alt="failure view"
+      />
+      <h1>Product Not Found</h1>
+      <button
+        onClick={this.restartShopping}
+        className="continue-shopping-btn"
+        type="button"
+      >
+        Continue Shopping
+      </button>
+    </div>
+  )
 
   getProductDetails = () => {
     const {apiStatus} = this.state
